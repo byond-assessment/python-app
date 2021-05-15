@@ -14,7 +14,7 @@ services:
                     cpus: '0.10'
                     memory: 128M
     python_server:
-        image: byond:latest
+        image: byond:18
         restart: always
         ports:
             - ${HOST_PORT}:${CONTAINER_PORT}
