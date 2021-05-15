@@ -1,0 +1,21 @@
+version: '3.6'
+
+volumes:
+    redis:
+services:
+    redis_server:
+        image: redis
+        restart: always
+        volumes:     
+            - redis:/data
+    python_server:
+        image: byond:latest
+        restart: always
+        ports:
+            - ${HOST_PORT}:${CONTAINER_PORT}
+        environment:
+            REDIS_HOST: redis_server
+            REDIS_PORT: 6379
+            BIND_PORT: ${CONTAINER_PORT}
+        depends_on:
+            - redis_server
