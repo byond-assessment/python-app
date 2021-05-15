@@ -8,8 +8,13 @@ services:
         restart: always
         volumes:     
             - redis:/data
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.10'
+                    memory: 128M
     python_server:
-        image: byond:latest
+        image: byond:18
         restart: always
         ports:
             - ${HOST_PORT}:${CONTAINER_PORT}
@@ -19,3 +24,8 @@ services:
             BIND_PORT: ${CONTAINER_PORT}
         depends_on:
             - redis_server
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.20'
+                    memory: 512M
