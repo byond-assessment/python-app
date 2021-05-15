@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    stages {
+        stage('Download code') {
+            steps {
+                script {
+                    git credentialsId: 'github', url: 'https://github.com/byond-assessment/python-app.git'
+                }
+            }
+        }
+        stage('Build Docker image') {
+            steps {
+                script {
+                    println("Building DockerFile for application")
+                    docker.build("byond:${env.BUILD_ID}").tag("latest")
+                    sh "rm -f requirements.txt Dockerfile"
+                }
+            }
+        }
+        stage('Deploy new Image') {
+            steps {
+                script {
+                    sh "docker-compose --env-file variables.txt down"
+                    sh "docker-compose --env-file variables.txt up -d --force-recreate"
+                }
+            }
+        }
+        stage('Cleaninig Files') {
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
+    }
+    post {
+        always {
+            println("Execution completed")
+        }
+        failure {
+            println("Execution Failed")
+        }
+        success {
+            println("Execution succeded")
+        }
+    }
+}
