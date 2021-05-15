@@ -8,6 +8,6 @@ bind_port = int(os.environ['BIND_PORT'])
 def hello():
     redis.incr('hits')
     total_hits = redis.get('hits').decode()
-    return f'Hello from Redis! I have been seen {total_hits} times.'
+    return ('Hello from Redis! I have been seen {} times.'.format({total_hits}))
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=bind_port)
