@@ -14,7 +14,7 @@ services:
                     cpus: '0.10'
                     memory: 128M
     python_server:
-        image: byond:18
+        image: byond:latest
         restart: always
         ports:
             - ${HOST_PORT}:${CONTAINER_PORT}
@@ -29,3 +29,8 @@ services:
                 limits:
                     cpus: '0.20'
                     memory: 512M
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://python_server:${CONTAINER_PORT}/"]
+            interval: 5s
+            timeout: 10s
+            retries: 3
