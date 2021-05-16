@@ -47,6 +47,48 @@ stage('Deploy new Image') {
 ````
 
 ### Docker compose configuration
+
+#### **Redis Volume**
+
+````yaml
+volumes:
+    redis:
+services:
+    redis_server:
+        image: redis
+        restart: always
+        volumes:     
+            - redis:/data
+````
+
+For redis service we need to create a volume. 
+
+````bash
+docker volume create redis
+````
+
+After that we can verify the creation with the following command
+
+````bash
+docker volume inspect redis
+````
+
+````json
+[
+    {
+        "CreatedAt": "2021-05-15T18:46:50Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/redis/_data",
+        "Name": "redis",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+````
+
+#### **Ports**
+
 Is required by this file to define de following variables in the variables.txt 
 
 ````properties
@@ -87,7 +129,7 @@ python_server:
         restart: always
 ````
 
-#### Resources
+#### **Resources**
 Resources are limited to 200 milicores and 256 mb of memory
 
 ````yaml
@@ -98,7 +140,7 @@ deploy:
             memory: 512M
 ````
 
-### HealthChecks
+#### **HealthChecks**
 
 ````yaml
 healthcheck:
