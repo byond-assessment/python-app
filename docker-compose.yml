@@ -30,7 +30,7 @@ services:
                     cpus: '0.20'
                     memory: 512M
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://python_server:${CONTAINER_PORT}/"]
-            interval: 5s
-            timeout: 10s
-            retries: 3
+            test: ["CMD", "curl", "-f", "http://python_server:${CONTAINER_PORT}/${ENDPOINT}"]
+            interval: ${INTERVAL}
+            timeout: ${TIMEOUT}
+            retries: ${RETRIES}
